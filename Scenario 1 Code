@@ -1,0 +1,29 @@
+import os
+import tarfile
+import boto3
+
+# Set up AWS S3 client
+s3 = boto3.client('s3', region_name='us-east-1')
+
+# Define local backup folder and AWS S3 bucket
+local_folder = '/path/to/local/folder'
+bucket_name = 'my-backup-bucket'
+
+# Compress the files in the local folder
+backup_name = 'backup.tar.gz'
+with tarfile.open(backup_name, 'w:gz') as tar:
+    for root, _, files in os.walk(local_folder):
+        for file in files:
+            tar.add(os.path.join(root, file))
+
+# Upload the backup to S3
+s3.upload_file(backup_name, bucket_name, backup_name)
+
+# Clean up: remove the local backup file
+os.remove(backup_name)
+
+# Log backup activity or send notifications
+with open('backup.log', 'a') as log_file:
+    log_file.write('Backup completed for {local_folder}.\n')
+
+print('Backup completed.')
