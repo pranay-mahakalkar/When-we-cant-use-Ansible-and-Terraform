@@ -27,3 +27,8 @@ with open('backup.log', 'a') as log_file:
     log_file.write('Backup completed for {local_folder}.\n')
 
 print('Backup completed.')
+
+
+
+#In this example, Python simplifies the process of creating an automated file backup system by allowing you to tailor the backup logic to
+#your specific needs, manage data compression, encryption, and remote storage, and record backup activities.
